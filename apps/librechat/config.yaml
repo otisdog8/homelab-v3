@@ -17,6 +17,7 @@ data:
   OPENID_ISSUER: "https://authentik.rooty.dev/application/o/librechat/"
   OPENID_SCOPE: "openid profile email"
   OPENID_CALLBACK_URL: "/oauth/openid/callback"
+  CHECK_BALANCE: "true"
 
 ---
 apiVersion: v1
