@@ -1,0 +1,52 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: librechat-config
+data:
+  HOST: "0.0.0.0"
+  PORT: "3080"
+  DOMAIN_CLIENT: "https://chat.rooty.dev"
+  DOMAIN_SERVER: "https://chat.rooty.dev"
+  MONGO_URI: "mongodb://mongodb:27017/LibreChat"
+  MEILI_HOST: "http://meilisearch:7700"
+  MEILI_NO_ANALYTICS: "true"
+  ALLOW_EMAIL_LOGIN: "false"
+  ALLOW_REGISTRATION: "false"
+  ALLOW_SOCIAL_LOGIN: "true"
+  ALLOW_SOCIAL_REGISTRATION: "true"
+  OPENID_ISSUER: "https://authentik.rooty.dev/application/o/librechat/"
+  OPENID_SCOPE: "openid profile email"
+  OPENID_CALLBACK_URL: "/oauth/openid/callback"
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: librechat-yaml-config
+data:
+  librechat.yaml: |
+    # Configuration version (required)
+    version: 1.0.0
+
+    # Cache settings: Set to true to enable caching
+    cache: true
+
+    # Definition of custom endpoints
+    endpoints:
+      custom:
+        # OpenRouter.ai Example
+        - name: "OpenRouter"
+          # For `apiKey` and `baseURL`, you can use environment variables that you define.
+          # recommended environment variables:
+          # Known issue: you should not use `OPENROUTER_API_KEY` as it will then override the `openAI` endpoint to use OpenRouter as well.
+          apiKey: "${OPENROUTER_KEY}"
+          baseURL: "https://openrouter.ai/api/v1"
+          models:
+            default: ["gpt-4-1106-preview"]
+            fetch: true
+          titleConvo: true
+          titleModel: "gpt-4-1106-preview"
+          summarize: false
+          summaryModel: "gpt-4-1106-preview"
+          forcePrompt: false
+          modelDisplayLabel: "OpenRouter"

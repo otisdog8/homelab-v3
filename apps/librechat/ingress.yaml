@@ -1,0 +1,18 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: librechat
+spec:
+  routes:
+    - match: Host(`chat.rooty.dev`) && PathPrefix(`/`)
+      kind: Rule
+      services:
+        - name: librechat
+          port: 3080
+    - match: Host(`chat.k8s.rooty.dev`) && PathPrefix(`/`)
+      kind: Rule
+      services:
+        - name: librechat
+          port: 3080
+  tls:
+    secretName: rooty-dev-wildcard

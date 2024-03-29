@@ -1,0 +1,3 @@
+longhorn:
+  helmPreUpgradeCheckerJob:
+    enabled: false

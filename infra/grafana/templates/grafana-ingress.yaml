@@ -1,0 +1,18 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: grafana
+spec:
+  routes:
+    - match: Host(`grafana.rooty.dev`) && PathPrefix(`/`)
+      kind: Rule
+      services:
+        - name: grafana
+          port: 80
+    - match: Host(`grafana.k8s.rooty.dev`) && PathPrefix(`/`)
+      kind: Rule
+      services:
+        - name: grafana
+          port: 80
+  tls:
+    secretName: rooty-dev-wildcard

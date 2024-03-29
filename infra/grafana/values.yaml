@@ -1,0 +1,26 @@
+grafana:
+  grafana.ini:
+    auth:
+      signout_redirect_url: "https://authentik.rooty.dev/application/o/grafana/end-session/"
+      disable_login_form: true
+    auth.generic_oauth:
+      name: authentik
+      enabled: true
+      client_id: $__file{/etc/secrets/auth_generic_oauth/client_id}
+      client_secret: $__file{/etc/secrets/auth_generic_oauth/client_secret}
+      scopes: "openid profile email grafana-groups"
+      auth_url: "https://authentik.rooty.dev/application/o/authorize/"
+      token_url: "https://authentik.rooty.dev/application/o/token/"
+      api_url: "https://authentik.rooty.dev/application/o/userinfo/"
+      # Optionally map user groups to Grafana roles
+      role_attribute_path: contains(info.groups[*], 'Grafana Admins') && 'Admin' || contains(info.groups[*], 'Grafana Editors') && 'Editor' || 'Viewer'
+    auth.basic:
+      enabled: false
+    server:
+      root_url: https://grafana.rooty.dev/
+  extraSecretMounts:
+      - name: auth-generic-oauth-secret-mount
+        secretName: auth-generic-oauth-secret
+        defaultMode: 0440
+        mountPath: /etc/secrets/auth_generic_oauth
+        readOnly: true

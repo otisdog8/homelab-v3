@@ -1,0 +1,133 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: librechat
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api
+  template:
+    metadata:
+      labels:
+        app: api
+    spec:
+      containers:
+        - name: librechat
+          image: rootydev/librechat
+          ports:
+            - containerPort: 3080
+          envFrom:
+            - configMapRef:
+                name: librechat-config
+            - secretRef:
+                name: librechat-secret
+          volumeMounts:
+            - name: librechat-yaml-volume
+              mountPath: /app/librechat.yaml
+              subPath: librechat.yaml
+      volumes:
+        - name: librechat-yaml-volume
+          configMap:
+            name: librechat-yaml-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: librechat
+spec:
+  selector:
+    app: api
+  ports:
+    - protocol: TCP
+      port: 3080
+      targetPort: 3080
+  type: ClusterIP
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongodb-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongodb
+  template:
+    metadata:
+      labels:
+        app: mongodb
+    spec:
+      containers:
+        - name: chat-mongodb
+          image: mongo
+          command: ["mongod", "--noauth", "--bind_ip_all"]
+          volumeMounts:
+            - name: mongodb-storage
+              mountPath: /data/db
+          ports:
+            - containerPort: 27017
+      volumes:
+        - name: mongodb-storage
+          persistentVolumeClaim:
+            claimName: mongodb-pvc
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongodb
+spec:
+  selector:
+    app: mongodb
+  ports:
+    - protocol: TCP
+      port: 27017
+      targetPort: 27017
+  type: ClusterIP
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: meilisearch-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: meilisearch
+  template:
+    metadata:
+      labels:
+        app: meilisearch
+    spec:
+      containers:
+        - name: chat-meilisearch
+          image: getmeili/meilisearch:v1.5
+          envFrom:
+            - configMapRef:
+                name: librechat-config
+          volumeMounts:
+            - name: meilisearch-storage
+              mountPath: /meili_data
+          ports:
+            - containerPort: 7700
+      volumes:
+        - name: meilisearch-storage
+          persistentVolumeClaim:
+            claimName: meilisearch-pvc
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: meilisearch
+spec:
+  selector:
+    app: meilisearch
+  ports:
+    - protocol: TCP
+      port: 7700
+      targetPort: 7700
+  type: ClusterIP

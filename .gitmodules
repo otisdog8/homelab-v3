@@ -1,0 +1,3 @@
+[submodule "images/LibreChat"]
+	path = images/LibreChat
+	url = https://github.com/danny-avila/LibreChat.git

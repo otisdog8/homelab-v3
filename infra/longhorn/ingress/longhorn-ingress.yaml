@@ -1,0 +1,26 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: longhorn-ingress
+spec:
+  routes:
+    - match: Host(`longhorn.rooty.dev`) && PathPrefix(`/`)
+      kind: Rule
+      middlewares:
+        - name: authentik
+          namespace: authentik
+      services:
+        - name: longhorn-frontend
+          port: 80
+    - match: "Host(`longhorn.rooty.dev`) && PathPrefix(`/outpost.goauthentik.io/`)"
+      kind: Rule
+      priority: 15
+      services:
+        - kind: Service
+          # Or, to use an external Outpost, create an ExternalName service and reference that here.
+          # See https://kubernetes.io/docs/concepts/services-networking/service/#externalname
+          name: ak-outpost-traefik-outpost
+          namespace: authentik
+          port: 9000
+  tls:
+    secretName: rooty-dev-wildcard
