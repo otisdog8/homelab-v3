@@ -104,7 +104,7 @@ spec:
     spec:
       containers:
         - name: chat-meilisearch
-          image: getmeili/meilisearch:v1.5
+          image: getmeili/meilisearch:v1.7.3
           envFrom:
             - configMapRef:
                 name: librechat-config
