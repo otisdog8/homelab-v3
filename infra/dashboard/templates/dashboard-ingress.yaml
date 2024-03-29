@@ -11,7 +11,7 @@ spec:
           namespace: authentik
       services:
         - name: kubernetes-dashboard-kong-proxy
-          port: 8443
+          port: 443
     - match: "Host(`dash.rooty.dev`) && PathPrefix(`/outpost.goauthentik.io/`)"
       kind: Rule
       priority: 15
