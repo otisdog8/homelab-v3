@@ -10,7 +10,7 @@ kubernetes-dashboard:
   ##  - https://github.com/kubernetes-sigs/metrics-server
   ##  - https://github.com/kubernetes-sigs/metrics-server/tree/master/charts/metrics-server
   metrics-server:
-    enabled: false
+    enabled: true
 
   ## Optional Cert Manager sub-chart configuration
   ## Enable this if you don't already have cert-manager enabled on your cluster.
