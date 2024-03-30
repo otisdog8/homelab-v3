@@ -17,6 +17,8 @@ spec:
           image: harbor.rooty.dev/cluster/rooty-dev:latest
           ports:
             - containerPort: 80
+      imagePullSecrets:
+        - name: harbor-registry
 ---
 apiVersion: v1
 kind: Service
