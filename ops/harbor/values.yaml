@@ -8,4 +8,9 @@ harbor:
       registry:
         size: 50Gi
   externalURL: https://harbor.rooty.dev
-  updateStrategy.type: "Recreate"
+  updateStrategy:
+    type: Recreate
+  registry:
+    credentials:
+      existingSecret: harbor-secret
+  existingSecretAdminPassword: harbor-secret
