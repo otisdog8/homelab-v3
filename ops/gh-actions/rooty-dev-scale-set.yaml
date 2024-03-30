@@ -14,7 +14,7 @@ spec:
     githubConfigSecret: rooty-dev-secret
     template:
       spec:
-        serviceAccountName: rooty-dev-scale-set-sa
+        serviceAccountName: rooty-dev-deployment-restart-sa
     githubConfigUrl: "https://github.com/otisdog8/rooty.dev/"
 ---
 apiVersion: v1
