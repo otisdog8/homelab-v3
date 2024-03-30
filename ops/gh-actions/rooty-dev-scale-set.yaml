@@ -1,0 +1,44 @@
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+metadata:
+  name: rooty-dev-scale-set
+  namespace: arc-runners
+spec:
+  targetNamespace: arc-runners
+  createNamespace: true
+  version: 0.9.0
+  chart: oci://ghcr.io/actions/actions-runner-controller-charts/gha-runner-scale-set
+  valuesContent: |-
+    containerMode.type: "dind"
+    githubConfigSecret: rooty-dev-secret
+    template.spec.serviceAccountName: rooty-dev-scale-set-sa
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: rooty-dev-deployment-restart-sa
+  namespace: arc-runners
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: deployment-restart-role
+  namespace: personal-site
+rules:
+  - apiGroups: ["apps", "extensions"]
+    resources: ["deployments"]
+    verbs: ["get", "list", "watch", "patch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: deployment-restart-rolebinding
+  namespace: personal-site
+subjects:
+  - kind: ServiceAccount
+    name: rooty-dev-deployment-restart-sa
+    namespace: arc-runners
+roleRef:
+  kind: Role
+  name: deployment-restart-role
+  apiGroup: rbac.authorization.k8s.io
