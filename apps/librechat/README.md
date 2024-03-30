@@ -16,3 +16,7 @@ stringData:
   JWT_SECRET: ""
   JWT_REFRESH_SECRET: ""
 ```
+
+
+
+To edit balances, you have to exec into the pod and do things manually.
