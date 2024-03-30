@@ -13,5 +13,5 @@ harbor:
   registry:
     credentials:
       existingSecret: harbor-secret
-    relativeURLs: true
+    relativeurls: true
   existingSecretAdminPassword: harbor-secret
