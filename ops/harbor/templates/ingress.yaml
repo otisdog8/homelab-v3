@@ -1,0 +1,18 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: harbor-ingress
+spec:
+  routes:
+    - match: Host(`harbor.rooty.dev`) && PathPrefix(`/`)
+      kind: Rule
+      services:
+        - name: harbor-core
+          port: 80
+    - match: Host(`harbor.k8s.rooty.dev`) && PathPrefix(`/`)
+      kind: Rule
+      services:
+        - name: harbor-core
+          port: 80
+  tls:
+    secretName: rooty-dev-wildcard
