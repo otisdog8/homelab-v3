@@ -8,6 +8,7 @@ spec:
   dnsNames:
     - "*.k8s.rooty.dev"
     - "*.rooty.dev"
+    - "rooty.dev"
   issuerRef:
     name: cloudflare-issuer
     kind: ClusterIssuer
