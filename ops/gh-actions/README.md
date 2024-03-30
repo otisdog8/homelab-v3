@@ -1,0 +1,1 @@
+This doesn't work for some reason. Its probably auth related. https://github.com/argoproj/argo-cd/issues/12436 is related somewhat.

@@ -1,0 +1,1 @@
+Once you deploy quickly make sure to change the auth to oidc.

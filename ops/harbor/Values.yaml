@@ -1,0 +1,11 @@
+harbor:
+  expose:
+    type: clusterIP
+    tls:
+      enabled: false
+  persistence:
+    persistentVolumeClaim:
+      registry:
+        size: 50Gi
+  externalURL: https://harbor.rooty.dev
+  updateStrategy.type: Recreate
