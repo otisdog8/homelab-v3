@@ -12,7 +12,9 @@ spec:
     containerMode:
       type: dind
     githubConfigSecret: rooty-dev-secret
-    template.spec.serviceAccountName: rooty-dev-scale-set-sa
+    template:
+      spec:
+        serviceAccountName: rooty-dev-scale-set-sa
     githubConfigUrl: "https://github.com/otisdog8/rooty.dev/"
 ---
 apiVersion: v1
