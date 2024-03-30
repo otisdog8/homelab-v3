@@ -1,0 +1,13 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: personal-site
+spec:
+  routes:
+    - match: Host(`rooty.dev`) || Host(`www.rooty.dev`) || Host(`k8s.rooty.dev`) || Host(`www.k8s.rooty.dev`) || Host(`blog.rooty.dev`) || Host('www.blog.rooty.dev') # want more? add more
+      kind: Rule
+      services:
+        - name: personal-site
+          port: 80
+  tls:
+    secretName: rooty-dev-wildcard
