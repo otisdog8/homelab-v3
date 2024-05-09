@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: project-deployment-jaroot
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: project-jaroot
+  template:
+    metadata:
+      labels:
+        app: project-jaroot
+    spec:
+      containers:
+        - name: project-jaroot
+          image: harbor.rooty.dev/132b-project/project-jaroot:latest
+          ports:
+            - containerPort: 8080
+      imagePullSecrets:
+        - name: harbor-registry
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: project-jaroot
+spec:
+  selector:
+    app: project-jaroot
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+  type: ClusterIP
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: dashboard-ingress
+spec:
+  routes:
+    - match: Host(`cse132b-jaroot.rooty.dev`) && PathPrefix(`/`)
+      kind: Rule
+      middlewares:
+        - name: authentik
+          namespace: authentik
+      services:
+        - name: project-jaroot
+          port: 8080
+    - match: "Host(`cse132b-jaroot.rooty.dev`) && PathPrefix(`/outpost.goauthentik.io/`)"
+      kind: Rule
+      priority: 15
+      services:
+        - kind: Service
+          # Or, to use an external Outpost, create an ExternalName service and reference that here.
+          # See https://kubernetes.io/docs/concepts/services-networking/service/#externalname
+          name: ak-outpost-traefik-outpost
+          namespace: authentik
+          port: 9000
+  tls:
+    secretName: rooty-dev-wildcard
