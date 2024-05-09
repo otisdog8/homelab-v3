@@ -27,7 +27,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: deployment-restart-role
-  namespace: 132b
+  namespace: cse132b
 rules:
   - apiGroups: ["apps", "extensions"]
     resources: ["deployments"]
@@ -37,7 +37,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: deployment-restart-rolebinding
-  namespace: 132b
+  namespace: cse132b
 subjects:
   - kind: ServiceAccount
     name: 132b-project-deployment-restart-sa
