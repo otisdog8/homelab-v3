@@ -16,6 +16,7 @@ spec:
       spec:
         serviceAccountName: 132b-project-deployment-restart-sa
     githubConfigUrl: "https://github.com/otisdog8/cse-132b-project/"
+    minRunners: 1
 ---
 apiVersion: v1
 kind: ServiceAccount
