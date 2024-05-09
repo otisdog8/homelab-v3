@@ -1,0 +1,48 @@
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+metadata:
+  name: 132b-project-scale-set
+  namespace: arc-runners
+spec:
+  targetNamespace: arc-runners
+  createNamespace: true
+  version: 0.9.0
+  chart: oci://ghcr.io/actions/actions-runner-controller-charts/gha-runner-scale-set
+  valuesContent: |-
+    containerMode:
+      type: dind
+    githubConfigSecret: 132b-project-secret
+    template:
+      spec:
+        serviceAccountName: 132b-project-deployment-restart-sa
+    githubConfigUrl: "https://github.com/otisdog8/cse-132b-project/"
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: 132b-project-deployment-restart-sa
+  namespace: arc-runners
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: deployment-restart-role
+  namespace: 132b
+rules:
+  - apiGroups: ["apps", "extensions"]
+    resources: ["deployments"]
+    verbs: ["get", "list", "watch", "patch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: deployment-restart-rolebinding
+  namespace: 132b
+subjects:
+  - kind: ServiceAccount
+    name: 132b-project-deployment-restart-sa
+    namespace: arc-runners
+roleRef:
+  kind: Role
+  name: deployment-restart-role
+  apiGroup: rbac.authorization.k8s.io
