@@ -36,7 +36,7 @@ spec:
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
-  name: dashboard-ingress
+  name: jaroot-ingress
 spec:
   routes:
     - match: Host(`cse132b-jaroot.rooty.dev`) && PathPrefix(`/`)
