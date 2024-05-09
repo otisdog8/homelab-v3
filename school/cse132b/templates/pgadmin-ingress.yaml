@@ -7,12 +7,12 @@ spec:
     - match: Host(`cse132b-pgadmin.rooty.dev`) && PathPrefix(`/`)
       kind: Rule
       services:
-        - name: pgadmin4
+        - name: cse132b-pgadmin4
           port: 80
     - match: Host(`cse132b-pgadmin.k8s.rooty.dev`) && PathPrefix(`/`)
       kind: Rule
       services:
-        - name: pgadmin4
+        - name: cse132b-pgadmin4
           port: 80
   tls:
     secretName: rooty-dev-wildcard
