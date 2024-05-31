@@ -29,7 +29,7 @@ spec:
                   name: postgres-secret
                   key: POSTGRES_PASSWORD
             - name: POSTGRES_DB_NAME
-              value: "jaroot"
+              value: "master"
       imagePullSecrets:
         - name: harbor-registry
 ---
